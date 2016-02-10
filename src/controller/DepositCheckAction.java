@@ -24,12 +24,10 @@ public class DepositCheckAction extends Action {
 	private FormBeanFactory<DepositCheckForm> formBeanFactory = FormBeanFactory.getInstance(DepositCheckForm.class);
 	private TransactionDAO transactionDAO;
 	private CustomerDAO customerDAO;
-	Gson gson;
 
 	public DepositCheckAction(Model model) {
 		transactionDAO = model.getTransactionDAO();
 		customerDAO = model.getCustomerDAO();
-		gson = new Gson();
 		
 	}
 
@@ -41,17 +39,17 @@ public class DepositCheckAction extends Action {
 		List<String> errors = new ArrayList<String>();
 		request.setAttribute("errors", errors);
 		HttpSession session = request.getSession();
+		Gson gson = new Gson();
+		ReturnGson returnGson = new ReturnGson();
 		
 		try {
 			DepositCheckForm depisitCheckForm = formBeanFactory.create(request);
 			request.setAttribute("form",depisitCheckForm);
 			if (session.getAttribute("user") == null) {
-				ReturenGson returnGson = new ReturnGson();
 				returnGson.message = "You must log in prior to making this request";
 				return gson.toJson(returnGson.message);
 			}
 			if (session.getAttribute("user") instanceof CustomerBean) {
-				ReturenGson returnGson = new ReturnGson();
 				returnGson.message = "I’m sorry you are not authorized to preform that action";
 				return gson.toJson(returnGson.message);
 			}
@@ -61,7 +59,6 @@ public class DepositCheckAction extends Action {
 //			}
 			errors.addAll(depisitCheckForm.getValidationErrors());
 			if (errors.size() != 0) {
-				ReturenGson returnGson = new ReturnGson();
 				returnGson.message = "I’m sorry, there was a problem depositing the money";
 				return gson.toJson(returnGson.message);
 			}
@@ -74,13 +71,11 @@ public class DepositCheckAction extends Action {
 			
 			if (customerBean == null) {
 				errors.add("No such user! ");
-				ReturenGson returnGson = new ReturnGson();
 				returnGson.message = "I’m sorry, there was a problem depositing the money";
 				return gson.toJson(returnGson.message);
 			}
 			if ((d - l) > 0) {
 				errors.add("We only allow at most two decimal places");
-				ReturenGson returnGson = new ReturnGson();
 				returnGson.message = "I’m sorry, there was a problem depositing the money";
 				return gson.toJson(returnGson.message); 
 			}
@@ -93,26 +88,25 @@ public class DepositCheckAction extends Action {
 			transactionDAO.create(tBean);
 			Transaction.commit();
 			request.removeAttribute("form");
-			ReturenGson returnGson = new ReturnGson();
 			returnGson.message = "The account has been successfully updated";
 			return gson.toJson(returnGson.message);
 		} catch (RollbackException e) {
 			// TODO Auto-generated catch block
 			errors.add(e.getMessage());
-			ReturenGson returnGson = new ReturnGson();
 			returnGson.message = "I’m sorry, there was a problem depositing the money";
 			return gson.toJson(returnGson.message);
 		} catch (FormBeanException e) {
 			// TODO Auto-generated catch block
 			errors.add(e.getMessage());
-			ReturenGson returnGson = new ReturnGson();
 			returnGson.message = "I’m sorry, there was a problem depositing the money";
 			return gson.toJson(returnGson.message);
 		}
 		
-		private class ReturnGson {
-			String message;
-		}
+		
+	}
+	
+	private class ReturnGson {
+		String message;
 	}
 
 }
