@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,10 +45,10 @@ public class Controller extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String nextPage = performTheAction(request);
+		String json = performTheAction(request);
 		//System.out.println(nextPage);
 
-		sendToNextPage(nextPage, request, response);
+		returnJson(json, request, response);
 	}
 
 	/**
@@ -62,31 +63,19 @@ public class Controller extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		String servletPath = request.getServletPath();
 		String action = getActionName(servletPath);
-		System.out.println(action);
 
 		return Action.perform(action, request);
 	}
 
-	private void sendToNextPage(String nextPage, HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
-		if (nextPage == null) {
+	private void returnJson(String json, HttpServletRequest request, HttpServletResponse response) throws IOException{
+		if (json == null) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND, request.getServletPath());
 			return;
 		}
-
-		if (nextPage.endsWith(".do")) {
-			response.sendRedirect(nextPage);
+			response.setContentType("application/json");
+			PrintWriter out = response.getWriter();
+			out.append(json);
 			return;
-		}
-
-		if (nextPage.endsWith(".jsp") || nextPage.endsWith(".html")) {
-			RequestDispatcher d = request.getRequestDispatcher(nextPage);
-			d.forward(request, response);
-			return;
-		}
-
-		throw new ServletException(
-				Controller.class.getName() + ".sendToNextPage(\"" + nextPage + "\"): invalid extension.");
 	}
 
 	private String getActionName(String path) {
