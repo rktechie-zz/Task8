@@ -30,7 +30,7 @@ public class CreateCustomerAction extends Action {
 	}
 
 	public String getName() {
-		return "createCustomer.do";
+		return "createCustomer";
 	}
 
 	public String perform(HttpServletRequest request) {

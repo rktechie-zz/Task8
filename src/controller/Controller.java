@@ -37,7 +37,9 @@ public class Controller extends HttpServlet {
     
 	public void init() throws ServletException {
         Model model = new Model(getServletConfig());
-
+        Action.add(new CreateCustomerAction(model));
+//        Action.add(new DepositCheckAction(model));
+//        Action.add(new RequestCheckAction(model));
 }
 
 	/**
@@ -45,9 +47,10 @@ public class Controller extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		System.out.println("in get");
 		String json = performTheAction(request);
-		//System.out.println(nextPage);
-
+		System.out.println("in get");
+		
 		returnJson(json, request, response);
 	}
 
@@ -56,6 +59,7 @@ public class Controller extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		System.out.println("in post");
 		doGet(request, response);
 	}
 
@@ -63,7 +67,8 @@ public class Controller extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		String servletPath = request.getServletPath();
 		String action = getActionName(servletPath);
-
+		session.setAttribute("user", new EmployeeBean());
+		
 		return Action.perform(action, request);
 	}
 
