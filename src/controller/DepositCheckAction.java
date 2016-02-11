@@ -32,7 +32,7 @@ public class DepositCheckAction extends Action {
 	}
 
 	public String getName() {
-		return "depositCheck.do";
+		return "depositCheck";
 	}
 	
 	public String perform(HttpServletRequest request) {
@@ -45,14 +45,14 @@ public class DepositCheckAction extends Action {
 		try {
 			DepositCheckForm depisitCheckForm = formBeanFactory.create(request);
 			request.setAttribute("form",depisitCheckForm);
-			if (session.getAttribute("user") == null) {
-				returnGson.message = "You must log in prior to making this request";
-				return gson.toJson(returnGson.message);
-			}
-			if (session.getAttribute("user") instanceof CustomerBean) {
-				returnGson.message = "I’m sorry you are not authorized to preform that action";
-				return gson.toJson(returnGson.message);
-			}
+//			if (session.getAttribute("user") == null) {
+//				returnGson.message = "You must log in prior to making this request";
+//				return gson.toJson(returnGson.message);
+//			}
+//			if (session.getAttribute("user") instanceof CustomerBean) {
+//				returnGson.message = "I’m sorry you are not authorized to preform that action";
+//				return gson.toJson(returnGson.message);
+//			}
 			
 //			if (!depisitCheckForm.isPresent()) {
 //				return "depositCheck.jsp";

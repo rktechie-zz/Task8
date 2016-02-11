@@ -20,4 +20,8 @@
 		<servlet-name>appl-controller</servlet-name>
 		<url-pattern>    /createCustomer                     </url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>appl-controller</servlet-name>
+		<url-pattern>    /depositCheck                     </url-pattern>
+	</servlet-mapping>
 </web-app>
