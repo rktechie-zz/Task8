@@ -36,7 +36,6 @@ public class CreateCustomerAction extends Action {
 		request.setAttribute("errors", errors);
 		Gson gson = new Gson();
 		ReturnJSON returnclass = new ReturnJSON();
-		
 
 		try {
 			if (session.getAttribute("user") != null && session.getAttribute("user") instanceof EmployeeBean) {
@@ -54,7 +53,7 @@ public class CreateCustomerAction extends Action {
 				}
 
 				if (customerDAO.read(form.getUsername()) != null) {
-					errors.add("I'm sorry, there was a problem creating the account.");
+					errors.add("I�m sorry, there was a problem creating the account.");
 					returnclass.Message = errors.get(0);
 					return gson.toJson(returnclass);
 				}
