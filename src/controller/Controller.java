@@ -46,10 +46,7 @@ public class Controller extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		System.out.println("in get");
 		String json = performTheAction(request);
-		System.out.println("in get");
 		
 		returnJson(json, request, response);
 	}
@@ -58,8 +55,6 @@ public class Controller extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		System.out.println("in post");
 		doGet(request, response);
 	}
 

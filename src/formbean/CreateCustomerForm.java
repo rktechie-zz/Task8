@@ -3,9 +3,9 @@ package formbean;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mybeans.form.FormBean;
+import javax.servlet.http.HttpServletRequest;
 
-public class CreateCustomerForm extends FormBean {
+public class CreateCustomerForm{
 	private String firstname;
 	private String lastname;
 	private String username;
@@ -16,6 +16,25 @@ public class CreateCustomerForm extends FormBean {
 	private String state;
 	private String zip;
 
+	public CreateCustomerForm(HttpServletRequest request){
+		this.firstname = request.getParameter("firstname");
+		this.lastname = request.getParameter("lastname");
+		this.username = request.getParameter("username");
+		this.password = request.getParameter("password");
+		this.addr_line1 = request.getParameter("addr_line1");
+		this.addr_line2 = request.getParameter("addr_line2");
+		this.city = request.getParameter("city");
+		this.state = request.getParameter("state");
+		this.zip = request.getParameter("zip");
+	}
+	public boolean isPresent() {
+		if(this.firstname == null || this.lastname == null || this.username == null || this.password == null || this.addr_line1 == null || 
+				this.addr_line2 == null || this.city == null || this.state == null || this.zip == null )
+			return false;
+		else return true;
+	}
+	
+	
 	public String getFirstname() {
 		return firstname;
 	}

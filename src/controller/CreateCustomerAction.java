@@ -8,8 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
-import org.mybeans.form.FormBeanException;
-import org.mybeans.form.FormBeanFactory;
 
 import com.google.gson.Gson;
 
@@ -20,8 +18,6 @@ import model.CustomerDAO;
 import model.Model;
 
 public class CreateCustomerAction extends Action {
-
-	private FormBeanFactory<CreateCustomerForm> formBeanFactory = FormBeanFactory.getInstance(CreateCustomerForm.class);
 
 	private CustomerDAO customerDAO;
 
@@ -44,7 +40,7 @@ public class CreateCustomerAction extends Action {
 
 		try {
 			if (session.getAttribute("user") != null && session.getAttribute("user") instanceof EmployeeBean) {
-				CreateCustomerForm form = formBeanFactory.create(request);
+				CreateCustomerForm form = new CreateCustomerForm(request);
 
 				if (!form.isPresent()) {
 					returnclass.Message = "Input Parameters could not be read.";
@@ -90,9 +86,6 @@ public class CreateCustomerAction extends Action {
 			return gson.toJson(returnclass);
 		}catch (RollbackException e) {
 			returnclass.Message = "I'm sorry, there was a problem creating the account. Issue in insertion of record in database.";
-			return gson.toJson(returnclass);
-		} catch (FormBeanException e) {
-			returnclass.Message = "I'm sorry, there was a problem creating the account. Issue in reading the Form.";
 			return gson.toJson(returnclass);
 		}
 	}
