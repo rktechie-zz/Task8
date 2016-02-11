@@ -30,7 +30,7 @@ public class CreateCustomerAction extends Action {
 	}
 
 	public String getName() {
-		return "createCustomer.do";
+		return "createCustomer";
 	}
 
 	public String perform(HttpServletRequest request) {
@@ -58,7 +58,7 @@ public class CreateCustomerAction extends Action {
 				}
 
 				if (customerDAO.read(form.getUsername()) != null) {
-					errors.add("I知 sorry, there was a problem creating the account.");
+					errors.add("I'm sorry, there was a problem creating the account.");
 					returnclass.Message = errors.get(0);
 					return gson.toJson(returnclass);
 				}
@@ -81,7 +81,7 @@ public class CreateCustomerAction extends Action {
 				returnclass.Message = "The account has been successfully created.";
 				return gson.toJson(returnclass);
 			} else {
-				returnclass.Message = "I知 sorry you are not authorized to preform that action";
+				returnclass.Message = "I'm sorry you are not authorized to preform that action";
 				return gson.toJson(returnclass);
 			}
 		} catch (NumberFormatException e) {
@@ -89,10 +89,10 @@ public class CreateCustomerAction extends Action {
 			returnclass.Message = "Number Format Exception.";
 			return gson.toJson(returnclass);
 		}catch (RollbackException e) {
-			returnclass.Message = "I知 sorry, there was a problem creating the account. Issue in insertion of record in database.";
+			returnclass.Message = "I'm sorry, there was a problem creating the account. Issue in insertion of record in database.";
 			return gson.toJson(returnclass);
 		} catch (FormBeanException e) {
-			returnclass.Message = "I知 sorry, there was a problem creating the account. Issue in reading the Form.";
+			returnclass.Message = "I'm sorry, there was a problem creating the account. Issue in reading the Form.";
 			return gson.toJson(returnclass);
 		}
 	}
