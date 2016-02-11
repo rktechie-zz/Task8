@@ -16,13 +16,12 @@ import com.google.gson.Gson;
 import databean.CustomerBean;
 import databean.EmployeeBean;
 import formbean.CreateCustomerForm;
+import formbean.DepositCheckForm;
 import model.CustomerDAO;
 import model.Model;
 
 public class CreateCustomerAction extends Action {
-
 	private FormBeanFactory<CreateCustomerForm> formBeanFactory = FormBeanFactory.getInstance(CreateCustomerForm.class);
-
 	private CustomerDAO customerDAO;
 
 	public CreateCustomerAction(Model model) {

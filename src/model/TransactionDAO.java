@@ -105,13 +105,14 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 		return amount;
 	}
 	
-	public double getValidShares (int fundId, double shares) throws RollbackException {
+	public double getValidShares (int customerId, int fundId, double shares) throws RollbackException {
 		TransactionBean[] tbs = null;
 		try {
 			Transaction.begin();
 			
 			// How to execute select * from table where transactionType IS NULL
-			tbs =  match(MatchArg.equals("executeDate", null), MatchArg.equals("fundId", fundId), MatchArg.equals("transactionType", "4"));
+			tbs =  match(MatchArg.equals("executeDate", null), MatchArg.equals("fundId", fundId), 
+					MatchArg.equals("transactionType", "4"), MatchArg.equals("customerId", customerId));
 			
 			if (tbs != null) {
 				for (TransactionBean t : tbs) {
@@ -122,9 +123,6 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 						System.out.println("I break out");
 						System.out.println("new inside shares:" + shares);
 						break;
-//					case TransactionBean.BUY_FUND:
-//						shares += t.getShares() / 1000.00;
-//						break;
 					default:
 						break;
 					}
