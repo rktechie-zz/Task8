@@ -13,6 +13,12 @@ public class PositionInfo {
 		this.total = total;
 	}
 	
+	public PositionInfo(String name, String shares, String price) {
+                this.name = name;
+                this.shares = shares;
+                this.price = price;
+        }
+	
 	public void setName(String name) {
 		this.name = name;
 	}

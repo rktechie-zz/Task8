@@ -60,19 +60,19 @@ public class CreateFundAction extends Action{
                         
                         if (!createFundForm.isPresent()) {
                                 errors.add("Input Parameters could not be read");
-                                returnGson.message = "I’m sorry, there was a problem creating the fund";
+                                returnGson.message = "I’m sorry, there was a problem creating the fund: Input Parameters could not be read.";
                                 return gson.toJson(returnGson.message);
                         }
                         
                         FundBean fundBeanExist = fundDAO.read(createFundForm.getName());
                         if (fundBeanExist != null) {
                                 errors.add("Fund already exists!");
-                                returnGson.message = "I’m sorry, there was a problem creating the fund";
+                                returnGson.message = "I’m sorry, there was a problem creating the fund: Fund already exists.";
                                 return gson.toJson(returnGson.message);
                         }
                         if (fundBeanExist == null && fundDAO.match(MatchArg.equalsIgnoreCase("name", createFundForm.getName() )).length != 0 ){
                                 errors.add("Fund already exists! Check case of Fund name typed");
-                                returnGson.message = "I’m sorry, there was a problem creating the fund";
+                                returnGson.message = "I’m sorry, there was a problem creating the fund: Fund already exists! Check case of Fund name typed.";
                                 return gson.toJson(returnGson.message);
                         }
                         
@@ -101,11 +101,11 @@ public class CreateFundAction extends Action{
                         }
                 } catch (RollbackException e) {
                         errors.add(e.getMessage());
-                        returnGson.message = "I’m sorry, there was a problem creating the fund";
+                        returnGson.message = "I’m sorry, there was a problem creating the fund.";
                         return gson.toJson(returnGson.message);
                 } catch (FormBeanException e) {
                         errors.add(e.getMessage());
-                        returnGson.message = "I’m sorry, there was a problem creating the fund";
+                        returnGson.message = "I’m sorry, there was a problem creating the fund.";
                         return gson.toJson(returnGson.message);
                 }
         }
