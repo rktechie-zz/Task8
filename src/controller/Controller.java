@@ -66,7 +66,7 @@ public class Controller extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		String servletPath = request.getServletPath();
 		String action = getActionName(servletPath);
-		session.setAttribute("user", new EmployeeBean());
+//		session.setAttribute("user", new EmployeeBean());
 		
 		return Action.perform(action, request);
 	}

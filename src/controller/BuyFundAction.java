@@ -1,7 +1,9 @@
 package controller;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -120,7 +122,7 @@ public class BuyFundAction extends Action {
 			
 			
 			//Check valid balance
-			double validBalance = transactionDAO.getValidBalance(userName, curCash);
+			double validBalance = cash;
 			if (amount > validBalance) {
 //				errors.add("You do not have enough money to proceed with the transaction");
 				returnJson.message = "You do not have enough money to proceed with the transaction";
@@ -144,7 +146,13 @@ public class BuyFundAction extends Action {
 			transactionBean.setUserName(customerBean.getUserName());
 			transactionBean.setAmount((long)(amount * 100l));
 			transactionBean.setTransactionType("8");
+			Date currDate = new Date();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			dateFormat.setLenient(false);
+			String currDateString = dateFormat.format(currDate);
+			transactionBean.setExecuteDate(currDateString);
 			transactionDAO.create(transactionBean);
+			customerDAO.setBalance(customerBean.getUserName(), (long)(amount * 100l), "request");
 			Transaction.commit();
 			request.removeAttribute("form");
 			returnJson.message = "The account has been successfully updated";

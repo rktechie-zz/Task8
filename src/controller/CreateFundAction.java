@@ -112,7 +112,7 @@ public class CreateFundAction extends Action {
 				return gson.toJson(returnGson); 
 			} catch (RollbackException e) {
 				errors.add(e.getMessage());
-				returnGson.Message = "I'm sorry, there was a problem creating the fund. ";
+				returnGson.Message = "I'm sorry, there was a problem creating the fund";
 				return gson.toJson(returnGson);
 			} finally {
 				if (Transaction.isActive()) {
