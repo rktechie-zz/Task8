@@ -35,30 +35,42 @@ public class CreateCustomerAction extends Action {
 		HttpSession session = request.getSession();
 
 		List<String> errors = new ArrayList<String>();
-		request.setAttribute("errors", errors);
 		Gson gson = new Gson();
 		ReturnJSON returnclass = new ReturnJSON();
 
+
+		if (session.getAttribute("user") == null) {
+			returnclass.Message = "You must log in prior to making this request.";
+			return gson.toJson(returnclass);
+		}
+
+		if (!(session.getAttribute("user") instanceof EmployeeBean)) {
+			returnclass.Message = "I'm sorry you are not authorized to preform that action.";
+			return gson.toJson(returnclass);
+		}
+
 		try {
-			if (session.getAttribute("user") != null && session.getAttribute("user") instanceof EmployeeBean) {
-				CreateCustomerForm form = formBeanFactory.create(request);
+			CreateCustomerForm form = formBeanFactory.create(request);
 
-				if (!form.isPresent()) {
-					returnclass.Message = "Input Parameters could not be read.";
-					return gson.toJson(returnclass);
-				}
+			if (!form.isPresent()) {
+				returnclass.Message = "I'm sorry, there was a problem creating the account: Input Parameters missing. ";
+				return gson.toJson(returnclass);
+			}
 
-				errors.addAll(form.getValidationErrors());
-				if (errors.size() > 0) {
-					for(String output : errors) returnclass.Message += output;
-					return gson.toJson(returnclass);
-				}
+			errors.addAll(form.getValidationErrors());
+			if (errors.size() > 0) {
+				returnclass.Message = "I'm sorry, there was a problem creating the fund. ";
+				for(String output : errors) returnclass.Message += output;
+				return gson.toJson(returnclass);
+			}
 
-				if (customerDAO.read(form.getUsername()) != null) {
-					errors.add("I'm sorry, there was a problem creating the account.");
-					for(String output : errors) returnclass.Message += output;
-					return gson.toJson(returnclass);
-				}
+			if (customerDAO.read(form.getUsername()) != null) {
+				errors.add("I'm sorry, there was a problem creating the account: Username already present.");
+				for(String output : errors) returnclass.Message += output;
+				return gson.toJson(returnclass);
+			}
+
+			try{
 				Transaction.begin();
 				CustomerBean newUser = new CustomerBean();
 				newUser.setUserName(form.getUsername());
@@ -77,19 +89,16 @@ public class CreateCustomerAction extends Action {
 
 				returnclass.Message = "The account has been successfully created.";
 				return gson.toJson(returnclass);
-			} else {
-				returnclass.Message = "I'm sorry you are not authorized to preform that action";
+			} catch (RollbackException e){
+				returnclass.Message = "I'm sorry, there was a problem creating the account: Issue in insertion of record in database.";
 				return gson.toJson(returnclass);
+			} finally {
+				if (Transaction.isActive()) {
+					Transaction.rollback();
+				}
 			}
-		} catch (NumberFormatException e) {
-			//SHOULD NOT REACH HERE, Cash Field is Hardcoded to 0.
-			returnclass.Message = "Number Format Exception.";
-			return gson.toJson(returnclass);
-		}catch (RollbackException e) {
-			returnclass.Message = "I'm sorry, there was a problem creating the account. Issue in insertion of record in database.";
-			return gson.toJson(returnclass);
 		} catch (FormBeanException e) {
-			returnclass.Message = "I'm sorry, there was a problem creating the account. Issue in reading the Form.";
+			returnclass.Message = "I'm sorry, there was a problem creating the account: Issue in reading the Form.";
 			return gson.toJson(returnclass);
 		}
 	}

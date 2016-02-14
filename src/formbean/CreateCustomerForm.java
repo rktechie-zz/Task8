@@ -34,7 +34,7 @@ public class CreateCustomerForm extends FormBean{
 	}
 	public boolean isPresent() {
 		if(this.firstname == null || this.lastname == null || this.username == null || this.password == null || this.addr_line1 == null || 
-				this.addr_line2 == null || this.city == null || this.state == null || this.zip == null )
+				this.city == null || this.state == null || this.zip == null )
 			return false;
 		else return true;
 	}
@@ -127,11 +127,11 @@ public class CreateCustomerForm extends FormBean{
 		if (password == null || password.trim().length() == 0)
 			errors.add("Password is required.");
 
-		if (addr_line2 == null || addr_line1.trim().length() == 0)
+		if (addr_line1 == null || addr_line1.trim().length() == 0)
 			errors.add("Address Line 1 is required.");
 
-		if (addr_line2 == null || addr_line2.trim().length() == 0)
-			errors.add("Address Line 2 is required.");
+//		if (addr_line2 == null || addr_line2.trim().length() == 0)
+//			errors.add("Address Line 2 is required.");
 
 		if (city == null || city.trim().length() == 0)
 			errors.add("City is required.");
