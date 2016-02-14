@@ -38,6 +38,7 @@ public class CreateCustomerAction extends Action {
 		ReturnJSON returnclass = new ReturnJSON();
 
 		try {
+			System.out.println("checkpoint");
 			if (session.getAttribute("user") != null && session.getAttribute("user") instanceof EmployeeBean) {
 				CreateCustomerForm form = new CreateCustomerForm(request);
 
