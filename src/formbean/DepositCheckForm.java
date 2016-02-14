@@ -8,7 +8,6 @@ import org.mybeans.form.FormBean;
 public class DepositCheckForm extends FormBean {
 	private String userName;
 	private String depositAmount;
-	private String action;
 
 	public String getDepositAmount() {
 		return depositAmount;
@@ -26,16 +25,8 @@ public class DepositCheckForm extends FormBean {
 		this.userName = sanitize(userName);
 	}
 
-	public String getAction() {
-		return action;
-	}
-
-	public void setAction(String action) {
-		this.action = action;
-	}
-
 	public boolean isPresent() {
-		return action != null;
+		return true;
 	}
 
 	public List<String> getValidationErrors() {
