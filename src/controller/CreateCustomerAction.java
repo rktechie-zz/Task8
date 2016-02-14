@@ -28,7 +28,7 @@ public class CreateCustomerAction extends Action {
 	}
 
 	public String getName() {
-		return "createCustomer";
+		return "createCustomerAccount";
 	}
 
 	public String perform(HttpServletRequest request) {
