@@ -18,6 +18,9 @@ public class CreateCustomerForm extends FormBean{
 	private String state;
 	private String zip;
 
+	public CreateCustomerForm(){
+	}
+	
 	public CreateCustomerForm(HttpServletRequest request){
 		this.firstname = request.getParameter("firstname");
 		this.lastname = request.getParameter("lastname");
@@ -42,7 +45,6 @@ public class CreateCustomerForm extends FormBean{
 	}
 
 	public void setFirstname(String firstname) {
-		System.out.println("Set name : " + firstname);
 		this.firstname = sanitize(firstname);
 	}
 

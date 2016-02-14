@@ -28,7 +28,7 @@ public class CreateCustomerAction extends Action {
 	}
 
 	public String getName() {
-		return "createCustomer";
+		return "createCustomerAccount";
 	}
 
 	public String perform(HttpServletRequest request) {
@@ -40,7 +40,6 @@ public class CreateCustomerAction extends Action {
 		ReturnJSON returnclass = new ReturnJSON();
 
 		try {
-			System.out.println("checkpoint");
 			if (session.getAttribute("user") != null && session.getAttribute("user") instanceof EmployeeBean) {
 				CreateCustomerForm form = formBeanFactory.create(request);
 
@@ -51,13 +50,13 @@ public class CreateCustomerAction extends Action {
 
 				errors.addAll(form.getValidationErrors());
 				if (errors.size() > 0) {
-					returnclass.Message = errors.get(0);
+					for(String output : errors) returnclass.Message += output;
 					return gson.toJson(returnclass);
 				}
 
 				if (customerDAO.read(form.getUsername()) != null) {
 					errors.add("I'm sorry, there was a problem creating the account.");
-					returnclass.Message = errors.get(0);
+					for(String output : errors) returnclass.Message += output;
 					return gson.toJson(returnclass);
 				}
 				Transaction.begin();
@@ -97,6 +96,6 @@ public class CreateCustomerAction extends Action {
 }
 
 class ReturnJSON {
-	String Message;
+	String Message = "";
 }
 

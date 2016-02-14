@@ -18,7 +18,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>appl-controller</servlet-name>
-		<url-pattern>    /createCustomer                     </url-pattern>
+		<url-pattern>    /createCustomerAccount                     </url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>appl-controller</servlet-name>
