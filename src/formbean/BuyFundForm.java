@@ -6,38 +6,38 @@ import java.util.List;
 import org.mybeans.form.FormBean;
 
 public class BuyFundForm extends FormBean{
-	private String 	name;
-	private String 	amount;
+	private String 	fundSymbol;
+	private String 	cashValue;
 	
-	public String getName() {
-		return name;
+	public String getFundSymbol() {
+		return fundSymbol;
 	}
 
-	public String getAmount() {
-		return amount;
+	public String getCashValue() {
+		return cashValue;
 	}
 
-	public void setName(String name) {
-		this.name = sanitize(name);
+	public void setFundSymbol(String name) {
+		this.fundSymbol = sanitize(name);
 //		this.name = name;
 	}
 
-	public void setAmount(String amount) {
-		this.amount = sanitize(amount);
+	public void setCashValue(String amount) {
+		this.cashValue = sanitize(amount);
 //		this.amount = amount;
 	}
 
 	public List<String> getValidationErrors() {
 		List<String> errors = new ArrayList<String>();
 
-		if (name == null || name.trim().length() == 0)
+		if (fundSymbol == null || fundSymbol.trim().length() == 0)
 			errors.add("Fund name is required. ");
-		if (amount == null || !amount.matches(".*\\d.*")) 
+		if (cashValue == null || !cashValue.matches(".*\\d.*")) 
 			errors.add("Amount should be numeric. ");
-		if (amount != null) {
-			if (amount.trim().length() == 0) {
+		if (cashValue != null) {
+			if (cashValue.trim().length() == 0) {
 				errors.add("You should put the amount. ");
-			} else if (Double.parseDouble(amount) < 0){
+			} else if (Double.parseDouble(cashValue) < 0){
 				errors.add("Amount should not be negative. ");
 			}
 		}
