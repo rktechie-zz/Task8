@@ -97,7 +97,7 @@ public class CreateFundAction extends Action {
 				fundDAO.create(fundBean);
 				FundPriceHistoryBean fundHistoryBean = new FundPriceHistoryBean();
 				Date currDate = new Date();
-				SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+				SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 				dateFormat.setLenient(false);
 				String currDateString = dateFormat.format(currDate);
 				fundHistoryBean.setExecuteDate(currDateString);

@@ -38,7 +38,7 @@ public class FundPriceHistoryBean implements Comparable<FundPriceHistoryBean>{
 	}
 
 	public int compareTo(FundPriceHistoryBean fb) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 		dateFormat.setLenient(false);
 		try {
 			return dateFormat.parse(this.executeDate).compareTo(dateFormat.parse(fb.executeDate));
