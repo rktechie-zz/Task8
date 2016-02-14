@@ -5,7 +5,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class CreateCustomerForm{
+import org.mybeans.form.FormBean;
+
+public class CreateCustomerForm extends FormBean{
 	private String firstname;
 	private String lastname;
 	private String username;
