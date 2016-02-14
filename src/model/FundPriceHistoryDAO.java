@@ -42,31 +42,18 @@ public class FundPriceHistoryDAO extends GenericDAO<FundPriceHistoryBean> {
 	}
 	
 	public String getLatestTradingDayDateString () throws RollbackException, ParseException {
-		String date = null;
-		try {
-			Transaction.begin();
-			
-			FundPriceHistoryBean[] fb = match();
+		String date = null;			
+			FundPriceHistoryBean[] fb = this.match();
 			if (fb != null && fb.length != 0) {
 				Arrays.sort(fb);
 				date = fb[fb.length - 1].getExecuteDate();
 			}
-			
-
-			Transaction.commit();
-		} finally {
-			if (Transaction.isActive())
-				Transaction.rollback();
-		}
 		return date;
 	}
 	
 	public Date getLatestTradingDayDate () throws RollbackException, ParseException {
 
 		Date date = null;
-		try {
-			Transaction.begin();
-
 			FundPriceHistoryBean[] fb = match();
 
 			if (fb != null && fb.length != 0) {
@@ -76,11 +63,6 @@ public class FundPriceHistoryDAO extends GenericDAO<FundPriceHistoryBean> {
 				dateFormat.setLenient(false);
 				date = dateFormat.parse(fb[fb.length - 1].getExecuteDate());
 			}
-			
-			Transaction.commit();
-		} finally {
-			if (Transaction.isActive()) Transaction.rollback();
-		}
 		return date;
 	}
 	

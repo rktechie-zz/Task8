@@ -33,13 +33,13 @@ public class Model {
                         transactionShareDAO = new TransactionShareDAO(pool, "Transaction_Share");
                         positionDAO = new PositionDAO(pool, "Position");
 
-                        EmployeeBean eb = employeeDAO.read("root");
+                        EmployeeBean eb = employeeDAO.read("jadmin");
                         if (eb == null) {
                                 eb = new EmployeeBean();
-                                eb.setUserName("root");
-                                eb.setFirstName("root");
-                                eb.setLastName("root");
-                                eb.setPassword("root");
+                                eb.setUserName("jadmin");
+                                eb.setFirstName("Jane");
+                                eb.setLastName("Admin");
+                                eb.setPassword("admin");
                                 employeeDAO.create(eb);
                         }
                 } catch (DAOException | RollbackException e) {

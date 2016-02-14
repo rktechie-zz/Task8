@@ -152,15 +152,15 @@ public class BuyFundAction extends Action {
 
 		} catch (NumberFormatException e) {
 //			errors.add(e.getMessage());
-			returnJson.message = "I’m sorry, there was a problem buying funds";
+			returnJson.message = "I'm sorry, there was a problem buying funds";
 			return gson.toJson(returnJson.message); 
 		} catch (RollbackException e) {
 //			errors.add(e.getMessage());
-			returnJson.message = "I’m sorry, there was a problem buying funds";
+			returnJson.message = "I'm sorry, there was a problem buying funds";
 			return gson.toJson(returnJson.message); 
 		} catch (FormBeanException e) {
 //			errors.add(e.getMessage());
-			returnJson.message = "I’m sorry, there was a problem buying funds";
+			returnJson.message = "I'm sorry, there was a problem buying funds";
 			return gson.toJson(returnJson.message); 
 		}
 	}
