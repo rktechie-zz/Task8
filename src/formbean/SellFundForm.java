@@ -6,36 +6,36 @@ import java.util.List;
 import org.mybeans.form.FormBean;
 
 public class SellFundForm extends FormBean{
-	private String 	name;
-	private String 	shares;
+	private String 	fundSymbol;
+	private String 	numShares;
 	
-	public String getName() {
-		return name;
+	public String getFundSymbol() {
+		return fundSymbol;
 	}
 
-	public String getShares() {
-		return shares;
+	public String getNumShares() {
+		return numShares;
 	}
 
-	public void setName(String name) {
-		this.name = sanitize(name);
+	public void setFundSymbol(String name) {
+		this.fundSymbol = sanitize(name);
 	}
 
-	public void setShares(String shares) {
-		this.shares = sanitize(shares);
+	public void setNumShares(String shares) {
+		this.numShares = sanitize(shares);
 	}
 
 	public List<String> getValidationErrors() {
 		List<String> errors = new ArrayList<String>();
 
-		if (name == null || name.trim().length() == 0)
+		if (fundSymbol == null || fundSymbol.trim().length() == 0)
 			errors.add("Fund name is required. ");
-		if (shares == null || !shares.matches(".*\\d.*"))
+		if (numShares == null || !numShares.matches(".*\\d.*"))
 			errors.add("Shares should be numeric. ");
-		if (shares != null) {
-			if (shares.trim().length() == 0) {
+		if (numShares != null) {
+			if (numShares.trim().length() == 0) {
 				errors.add("You should put the number of shares. ");
-			} else if (Double.parseDouble(shares) < 0){
+			} else if (Double.parseDouble(numShares) < 0){
 				errors.add("Shares should not be negative. ");
 			}
 		}
