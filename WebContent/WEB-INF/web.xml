@@ -42,6 +42,10 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>appl-controller</servlet-name>
+		<url-pattern>    /viewPortfolio                     </url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>appl-controller</servlet-name>
 		<url-pattern>    /logout                     </url-pattern>
 	</servlet-mapping>
 </web-app>
