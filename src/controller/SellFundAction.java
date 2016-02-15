@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import databean.CustomerBean;
+import databean.EmployeeBean;
 import databean.FundBean;
 import databean.PositionBean;
 import databean.TransactionBean;
@@ -64,8 +65,13 @@ public class SellFundAction extends Action {
 			request.setAttribute("form", sellFundForm);
 
 			if (session.getAttribute("user") == null) {
-				returnJson.message = "You must log in prior to making this request";
-				return gson.toJson(returnJson.message);
+				returnJson.message = "You must log in prior to making this request. ";
+				return gson.toJson(returnJson);
+			}
+			
+			if (!(session.getAttribute("user") instanceof CustomerBean) ){
+				returnJson.message = "I'm sorry you are not authorized to preform that action";
+				return gson.toJson(returnJson);
 			}
 
 			if (!sellFundForm.isPresent()) {
@@ -106,7 +112,7 @@ public class SellFundAction extends Action {
 			errors.addAll(sellFundForm.getValidationErrors());
 			if (errors.size() != 0) {
 				returnJson.message = errors.get(0);
-				return gson.toJson(returnJson.message);
+				return gson.toJson(returnJson);
 			}
 			String userName = customerBean.getUserName();
 			int customerId = customerBean.getCustomerId();
@@ -116,7 +122,7 @@ public class SellFundAction extends Action {
 			if (fundBean == null) {
 				// errors.add("Fund does not exist");
 				returnJson.message = "Fund does not exist";
-				return gson.toJson(returnJson.message);
+				return gson.toJson(returnJson);
 			}
 			int fundId = fundBean.getFundId();
 			// How to determine whether this customer own this fund or not
@@ -124,26 +130,26 @@ public class SellFundAction extends Action {
 			if (position == null) {
 				// errors.add("You do not own this fund!");
 				returnJson.message = "You do not own this fund";
-				return gson.toJson(returnJson.message);
+				return gson.toJson(returnJson);
 			}
 			double curShares = (double) position.getShares() / 1000;
 			double shares = Double.parseDouble(sellFundForm.getNumShares());
 			if (shares == 0) {
 				// errors.add("You can not sell zero shares");
 				returnJson.message = "You can not sell zero shares";
-				return gson.toJson(returnJson.message);
+				return gson.toJson(returnJson);
 			}
 			if ((shares * 1000.0 - (long) (shares * 1000.0)) > 0) {
 				// errors.add("We only allow at most three decimal for shares");
 				returnJson.message = "We only allow at most three decimal for shares";
-				return gson.toJson(returnJson.message);
+				return gson.toJson(returnJson);
 			}
 
 			// Check valid shares
 			if (curShares < shares) {
 				// errors.add("You do not have enough shares!");
-				returnJson.message = "You do not have enough shares";
-				return gson.toJson(returnJson.message);
+				returnJson.message = "I'm sorry, you don�t have enough shares of that fund in your portfolio. ";
+				return gson.toJson(returnJson);
 			}
 			// double validShares = transactionDAO.getValidShares(customerId,
 			// fundId, curShares);
@@ -180,21 +186,20 @@ public class SellFundAction extends Action {
 			positionDAO.update(positionBean[0]);
 
 			Transaction.commit();
-			request.removeAttribute("form");
-			returnJson.message = "The account has been successfully updated";
+			returnJson.message = "The sale was successfully completed. ";
 			return gson.toJson(returnJson.message);
 
 		} catch (NumberFormatException e) {
 			errors.add(e.getMessage());
-			returnJson.message = "I’m sorry, there was a problem selling funds";
+			returnJson.message = "I'm sorry, there was a problem selling funds";
 			return gson.toJson(returnJson.message);
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
-			returnJson.message = "I’m sorry, there was a problem selling funds";
+			returnJson.message = "I'm sorry, there was a problem selling funds";
 			return gson.toJson(returnJson.message);
 		} catch (FormBeanException e) {
 			errors.add(e.getMessage());
-			returnJson.message = "I’m sorry, there was a problem selling funds";
+			returnJson.message = "I'm sorry, there was a problem selling funds";
 			return gson.toJson(returnJson.message);
 		}
 	}

@@ -53,7 +53,7 @@ public class RequestCheckAction extends Action {
 				return gson.toJson(returnGson.message);
 			}
 			if (session.getAttribute("user") instanceof EmployeeBean) {
-				returnGson.message = "I’m sorry you are not authorized to preform that action";
+				returnGson.message = "I'm sorry you are not authorized to preform that action";
 				return gson.toJson(returnGson.message);
 			}
 			RequestCheckForm form = formBeanFactory.create(request);
@@ -70,7 +70,7 @@ public class RequestCheckAction extends Action {
 			
 			errors.addAll(form.getValidationErrors());
 			if (errors.size() != 0) {
-				returnGson.message = "I’m sorry, there was a problem withdrawl the money";
+				returnGson.message = "I'm sorry, there was a problem withdrawl the money";
 				return gson.toJson(returnGson.message);
 			}
 
@@ -80,13 +80,13 @@ public class RequestCheckAction extends Action {
 			d = d * 100.00;
 			long l = (long) d;
 			if ((d - l) > 0) {
-				returnGson.message = "I’m sorry, there was a problem withdrawl the money";
+				returnGson.message = "I'm sorry, there was a problem withdrawl the money";
 				return gson.toJson(returnGson.message);
 			}
 			d = l / 100.00;
 			if (l > customerDAO.read(user.getUserName()).getCash()) {
 				errors.add("Balance is not enough to proceed the request");
-				returnGson.message = "I’m sorry, the amount requested is greater than the balance of your account";
+				returnGson.message = "I'm sorry, the amount requested is greater than the balance of your account";
 				return gson.toJson(returnGson.message);
 			}
 			Transaction.begin();
@@ -109,11 +109,11 @@ public class RequestCheckAction extends Action {
 			
 		} catch (RollbackException e) {
 			errors.add("System roll back");
-			returnGson.message = "I’m sorry, there was a problem withdrawl the money";
+			returnGson.message = "I'm sorry, there was a problem withdrawl the money";
 			return gson.toJson(returnGson.message);
 		} catch (FormBeanException e1) {
 			errors.add("Form data wrong");
-			returnGson.message = "I’m sorry, there was a problem withdrawl the money";
+			returnGson.message = "I'm sorry, there was a problem withdrawl the money";
 			return gson.toJson(returnGson.message);
 		}
 	}

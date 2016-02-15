@@ -53,7 +53,7 @@ public class DepositCheckAction extends Action {
 				return gson.toJson(returnGson.message);
 			}
 			if (session.getAttribute("user") instanceof CustomerBean) {
-				returnGson.message = "I’m sorry you are not authorized to preform that action";
+				returnGson.message = "I'm sorry you are not authorized to preform that action";
 				return gson.toJson(returnGson.message);
 			}
 
@@ -65,7 +65,7 @@ public class DepositCheckAction extends Action {
 //			}
 			errors.addAll(depisitCheckForm.getValidationErrors());
 			if (errors.size() != 0) {
-				returnGson.message = "I’m sorry, there was a problem depositing the money";
+				returnGson.message = "I'm sorry, there was a problem depositing the money";
 				return gson.toJson(returnGson.message);
 			}
 			
@@ -77,12 +77,12 @@ public class DepositCheckAction extends Action {
 			
 			if (customerBean == null) {
 				errors.add("No such user! ");
-				returnGson.message = "I’m sorry, there was a problem depositing the money";
+				returnGson.message = "I'm sorry, there was a problem depositing the money";
 				return gson.toJson(returnGson.message);
 			}
 			if ((d - l) > 0) {
 				errors.add("We only allow at most two decimal places");
-				returnGson.message = "I’m sorry, there was a problem depositing the money";
+				returnGson.message = "I'm sorry, there was a problem depositing the money";
 				return gson.toJson(returnGson.message); 
 			}
 			Transaction.begin();
@@ -105,12 +105,12 @@ public class DepositCheckAction extends Action {
 		} catch (RollbackException e) {
 			// TODO Auto-generated catch block
 			errors.add(e.getMessage());
-			returnGson.message = "I’m sorry, there was a problem depositing the money";
+			returnGson.message = "I'm sorry, there was a problem depositing the money";
 			return gson.toJson(returnGson.message);
 		} catch (FormBeanException e) {
 			// TODO Auto-generated catch block
 			errors.add(e.getMessage());
-			returnGson.message = "I’m sorry, there was a problem depositing the money";
+			returnGson.message = "I'm sorry, there was a problem depositing the money";
 			return gson.toJson(returnGson.message);
 		}
 		
