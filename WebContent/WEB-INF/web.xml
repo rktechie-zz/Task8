@@ -30,6 +30,14 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>appl-controller</servlet-name>
+		<url-pattern>    /buyFund                    </url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>appl-controller</servlet-name>
+		<url-pattern>    /sellFund                    </url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>appl-controller</servlet-name>
 		<url-pattern>    /depositCheck                     </url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>

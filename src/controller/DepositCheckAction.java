@@ -1,6 +1,8 @@
 package controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -85,7 +87,13 @@ public class DepositCheckAction extends Action {
 			tBean.setTransactionType("1");
 			tBean.setAmount(l);
 			tBean.setUserName(customerBean.getUserName());
+			Date currDate = new Date();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			dateFormat.setLenient(false);
+			String currDateString = dateFormat.format(currDate);
+			tBean.setExecuteDate(currDateString);
 			transactionDAO.create(tBean);
+			customerDAO.setBalance(customerBean.getUserName(), l, "deposit");
 			Transaction.commit();
 			request.removeAttribute("form");
 			returnGson.message = "The account has been successfully updated";

@@ -36,8 +36,12 @@ public class Controller extends HttpServlet {
         Action.add(new DepositCheckAction(model));
         Action.add(new RequestCheckAction(model));
         Action.add(new CreateFundAction(model));
+
         Action.add(new TransitionDayAction(model));
         Action.add(new ViewPortfolioAction(model));
+        Action.add(new BuyFundAction(model));
+        Action.add(new SellFundAction(model));
+
 }
 
 	/**
@@ -60,6 +64,9 @@ public class Controller extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		String servletPath = request.getServletPath();
 		String action = getActionName(servletPath);
+
+//		session.setAttribute("user", new EmployeeBean());
+
 		
 		return Action.perform(action, request);
 	}

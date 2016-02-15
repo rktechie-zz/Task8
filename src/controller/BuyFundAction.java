@@ -1,12 +1,15 @@
 package controller;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 import org.mybeans.form.FormBeanException;
@@ -18,12 +21,14 @@ import databean.CustomerBean;
 import databean.FundBean;
 import databean.FundInfoBean;
 import databean.FundPriceHistoryBean;
+import databean.PositionBean;
 import databean.TransactionBean;
 import formbean.BuyFundForm;
 import model.CustomerDAO;
 import model.FundDAO;
 import model.FundPriceHistoryDAO;
 import model.Model;
+import model.PositionDAO;
 import model.TransactionDAO;
 
 public class BuyFundAction extends Action {
@@ -33,12 +38,14 @@ public class BuyFundAction extends Action {
 	private CustomerDAO customerDAO;
 	private FundDAO fundDAO;
 	private FundPriceHistoryDAO fundPriceHistoryDAO;
+	private PositionDAO positionDAO;
 
 	public BuyFundAction(Model model) {
 		transactionDAO = model.getTransactionDAO();
 		fundDAO = model.getFundDAO();
 		fundPriceHistoryDAO = model.getFundPriceHistoryDAO();
 		customerDAO = model.getCustomerDAO();
+		positionDAO = model.getPositionDAO();
 	}
 
 	public String getName() {
@@ -66,6 +73,7 @@ public class BuyFundAction extends Action {
 				return gson.toJson(returnJson);
 			}
 
+
 			DecimalFormat df = new DecimalFormat("###,##0.00");
 			FundBean[] fundList = fundDAO.match();
 			if(fundList != null) {
@@ -86,7 +94,7 @@ public class BuyFundAction extends Action {
 			Double cash = (double) (customerDAO.read(customerBean.getUserName()).getCash()/100.00);
 			DecimalFormat df2 = new DecimalFormat(	"###,##0.00");
 			//System.out.println(cash);
-			request.setAttribute("avai_cash",df2.format(transactionDAO.getValidBalance(customerBean.getUserName(), cash)));
+//			request.setAttribute("avai_cash",df2.format(transactionDAO.getValidBalance(customerBean.getUserName(), cash)));
 			
 			errors.addAll(buyFundForm.getValidationErrors());
 			if (errors.size() != 0) {
@@ -100,7 +108,7 @@ public class BuyFundAction extends Action {
 			long curCash = customerBean.getCash() / 100;
 			
 			// Calculate shares
-			double amount = Double.parseDouble(buyFundForm.getAmount());
+			double amount = Double.parseDouble(buyFundForm.getCashValue());
 			if (amount < 1) {
 //				errors.add("Please enter an amount at least $1s");
 				returnJson.message = "Please enter an amount at least $1s";
@@ -120,7 +128,7 @@ public class BuyFundAction extends Action {
 			
 			
 			//Check valid balance
-			double validBalance = transactionDAO.getValidBalance(userName, curCash);
+			double validBalance = cash;
 			if (amount > validBalance) {
 //				errors.add("You do not have enough money to proceed with the transaction");
 				returnJson.message = "You do not have enough money to proceed with the transaction";
@@ -128,23 +136,52 @@ public class BuyFundAction extends Action {
 			}
 
 			// Get the fund ID of the fund name in form
-			FundBean fundBean = fundDAO.read(buyFundForm.getName());
+			FundBean fundBean = fundDAO.read(buyFundForm.getFundSymbol());
 			if (fundBean == null) {
 //				errors.add("Fund does not exist");
 				returnJson.message = "Fund does not exist";
 				return gson.toJson(returnJson.message); 
 			}
 			int fundId = fundBean.getFundId();
-
+			
+			long a = (long)(amount * 100l);
+			if (fundBean.getLatestPrice() > a) {
+				returnJson.message = "You do not have enough money to proceed with the transaction";
+				return gson.toJson(returnJson.message);
+			}
+			
+			int noOfShares = (int) (a / fundBean.getLatestPrice());
+			a = noOfShares * (fundBean.getLatestPrice());
+			
 			// Create a transaction bean
 			Transaction.begin();
 			TransactionBean transactionBean = new TransactionBean();
 			transactionBean.setCustomerId(customerId);
 			transactionBean.setFundId(fundId);
 			transactionBean.setUserName(customerBean.getUserName());
-			transactionBean.setAmount((long)(amount * 100l));
+			transactionBean.setAmount(a);
 			transactionBean.setTransactionType("8");
+			Date currDate = new Date();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			dateFormat.setLenient(false);
+			String currDateString = dateFormat.format(currDate);
+			transactionBean.setExecuteDate(currDateString);
 			transactionDAO.create(transactionBean);
+			customerDAO.setBalance(customerBean.getUserName(), a, "buy");
+			
+			PositionBean[] positionBean = positionDAO.match(MatchArg.equals("customerId",customerBean.getCustomerId()), MatchArg.equals("fundId", fundId));
+			if (positionBean.length == 0) {
+				PositionBean positionBeanTemp = new PositionBean(); 
+				positionBeanTemp.setCustomerId(customerId);
+				positionBeanTemp.setFundId(fundId);
+				positionBeanTemp.setShares(noOfShares);
+				positionDAO.create(positionBeanTemp);
+			} else {
+				positionBean[0].setCustomerId(customerId);
+				positionBean[0].setFundId(fundId);
+				positionBean[0].setShares(positionBean[0].getShares() + noOfShares);
+				positionDAO.update(positionBean[0]);	
+			}
 			Transaction.commit();
 			request.removeAttribute("form");
 			returnJson.message = "The account has been successfully updated";
@@ -152,14 +189,17 @@ public class BuyFundAction extends Action {
 
 		} catch (NumberFormatException e) {
 //			errors.add(e.getMessage());
+			System.out.println("number format");
 			returnJson.message = "I'm sorry, there was a problem buying funds";
 			return gson.toJson(returnJson.message); 
 		} catch (RollbackException e) {
 //			errors.add(e.getMessage());
+			System.out.println("rollback");
 			returnJson.message = "I'm sorry, there was a problem buying funds";
 			return gson.toJson(returnJson.message); 
 		} catch (FormBeanException e) {
 //			errors.add(e.getMessage());
+			System.out.println("formbean");
 			returnJson.message = "I'm sorry, there was a problem buying funds";
 			return gson.toJson(returnJson.message); 
 		}
