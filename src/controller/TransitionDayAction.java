@@ -12,6 +12,7 @@ import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import databean.EmployeeBean;
 import databean.FundBean;
@@ -43,7 +44,9 @@ public class TransitionDayAction extends Action {
 
 	public String perform(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		Gson gson = new Gson();
+		GsonBuilder builder = new GsonBuilder();
+		builder.disableHtmlEscaping();
+		Gson gson = builder.create();
 
 		sdf.setLenient(false);
 

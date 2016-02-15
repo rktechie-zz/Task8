@@ -7,12 +7,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import model.FundDAO;
-import model.FundPriceHistoryDAO;
-import model.Model;
-import model.PositionDAO;
-import model.TransactionDAO;
-
 import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
@@ -20,6 +14,7 @@ import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import databean.CustomerBean;
 import databean.FundBean;
@@ -27,6 +22,11 @@ import databean.PositionBean;
 import databean.PositionInfo;
 import databean.TransactionBean;
 import formbean.SellFundForm;
+import model.FundDAO;
+import model.FundPriceHistoryDAO;
+import model.Model;
+import model.PositionDAO;
+import model.TransactionDAO;
 
 public class SellFundAction extends Action {
 	private FormBeanFactory<SellFundForm> formBeanFactory = FormBeanFactory.getInstance(SellFundForm.class);
@@ -51,7 +51,9 @@ public class SellFundAction extends Action {
 		List<String> errors = new ArrayList<String>();
 		request.setAttribute("errors", errors);
 		HttpSession session = request.getSession();
-		Gson gson = new Gson();
+		GsonBuilder builder = new GsonBuilder();
+		builder.disableHtmlEscaping();
+		Gson gson = builder.create();
 		ReturnJson returnJson = new ReturnJson();
 
 		try {

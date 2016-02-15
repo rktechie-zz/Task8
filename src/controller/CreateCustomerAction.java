@@ -12,6 +12,7 @@ import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import databean.CustomerBean;
 import databean.EmployeeBean;
@@ -35,7 +36,9 @@ public class CreateCustomerAction extends Action {
 		HttpSession session = request.getSession();
 
 		List<String> errors = new ArrayList<String>();
-		Gson gson = new Gson();
+		GsonBuilder builder = new GsonBuilder();
+		builder.disableHtmlEscaping();
+		Gson gson = builder.create();
 		ReturnJSON returnclass = new ReturnJSON();
 
 

@@ -7,21 +7,21 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import model.FundDAO;
-import model.Model;
-import model.PositionDAO;
-import model.CustomerDAO;
-
 import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import databean.CustomerBean;
 import databean.FundBean;
 import databean.PositionBean;
 import databean.PositionInfo;
+import model.CustomerDAO;
+import model.FundDAO;
+import model.Model;
+import model.PositionDAO;
 
 public class ViewPortfolioAction extends Action {
 	private FundDAO fundDAO;
@@ -43,7 +43,9 @@ public class ViewPortfolioAction extends Action {
 	public String perform(HttpServletRequest request) {
 		List<String> errors = new ArrayList<String>();
 		HttpSession session = request.getSession();
-		Gson gson = new Gson();
+		GsonBuilder builder = new GsonBuilder();
+		builder.disableHtmlEscaping();
+		Gson gson = builder.create();
 		ReturnJson returnJson = new ReturnJson();
 		ArrayList<PositionInfo> list = new ArrayList<PositionInfo>();
 

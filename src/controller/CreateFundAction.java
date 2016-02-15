@@ -15,6 +15,7 @@ import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import databean.EmployeeBean;
 import databean.FundBean;
@@ -43,8 +44,9 @@ public class CreateFundAction extends Action {
 	public String perform(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		List<String> errors = new ArrayList<String>();
-
-		Gson gson = new Gson();
+		GsonBuilder builder = new GsonBuilder();
+		builder.disableHtmlEscaping();
+		Gson gson = builder.create();
 		ReturnGson returnGson = new ReturnGson();
 
 		if (session.getAttribute("user") == null) {
