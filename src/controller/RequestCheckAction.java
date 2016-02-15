@@ -33,7 +33,7 @@ public class RequestCheckAction extends Action {
 	}
 
 	public String getName() {
-		return "requestCheck.do";
+		return "requestCheck";
 	}
 
 	public String perform(HttpServletRequest request) {
@@ -70,7 +70,7 @@ public class RequestCheckAction extends Action {
 			}
 
 			CustomerBean user = (CustomerBean) request.getSession().getAttribute("user");
-			String s = form.getRequestAmount();
+			String s = form.getCashValue();
 			double d = Double.parseDouble(s);
 			d = d * 100.00;
 			long l = (long) d;

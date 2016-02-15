@@ -17,10 +17,10 @@ public class CreateCustomerForm extends FormBean{
 	private String city;
 	private String state;
 	private String zip;
-
+	
 	public CreateCustomerForm(){
 	}
-	
+
 	public CreateCustomerForm(HttpServletRequest request){
 		this.firstname = request.getParameter("firstname");
 		this.lastname = request.getParameter("lastname");

@@ -32,4 +32,16 @@
 		<servlet-name>appl-controller</servlet-name>
 		<url-pattern>    /depositCheck                     </url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>appl-controller</servlet-name>
+		<url-pattern>    /requestCheck                     </url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>appl-controller</servlet-name>
+		<url-pattern>    /login                     </url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>appl-controller</servlet-name>
+		<url-pattern>    /logout                     </url-pattern>
+	</servlet-mapping>
 </web-app>

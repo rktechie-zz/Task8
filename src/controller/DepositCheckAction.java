@@ -63,8 +63,8 @@ public class DepositCheckAction extends Action {
 				return gson.toJson(returnGson.message);
 			}
 			
-			String s =  depisitCheckForm.getDepositAmount();
-			CustomerBean customerBean = customerDAO.read(depisitCheckForm.getUserName());
+			String s =  depisitCheckForm.getCash();
+			CustomerBean customerBean = customerDAO.read(depisitCheckForm.getUsername());
 			double d = Double.parseDouble(s);
 			d = d * 100.0;
 			long l = (long) d;
