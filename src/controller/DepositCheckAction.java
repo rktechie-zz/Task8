@@ -48,16 +48,17 @@ public class DepositCheckAction extends Action {
 		ReturnGson returnGson = new ReturnGson();
 		
 		try {
+			if (session.getAttribute("user") == null) {
+				returnGson.message = "You must log in prior to making this request";
+				return gson.toJson(returnGson.message);
+			}
+			if (session.getAttribute("user") instanceof CustomerBean) {
+				returnGson.message = "I’m sorry you are not authorized to preform that action";
+				return gson.toJson(returnGson.message);
+			}
+
 			DepositCheckForm depisitCheckForm = formBeanFactory.create(request);
 			request.setAttribute("form",depisitCheckForm);
-//			if (session.getAttribute("user") == null) {
-//				returnGson.message = "You must log in prior to making this request";
-//				return gson.toJson(returnGson.message);
-//			}
-//			if (session.getAttribute("user") instanceof CustomerBean) {
-//				returnGson.message = "I’m sorry you are not authorized to preform that action";
-//				return gson.toJson(returnGson.message);
-//			}
 			
 //			if (!depisitCheckForm.isPresent()) {
 //				return "depositCheck.jsp";
@@ -91,7 +92,7 @@ public class DepositCheckAction extends Action {
 			tBean.setAmount(l);
 			tBean.setUserName(customerBean.getUserName());
 			Date currDate = new Date();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 			dateFormat.setLenient(false);
 			String currDateString = dateFormat.format(currDate);
 			tBean.setExecuteDate(currDateString);

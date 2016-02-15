@@ -96,7 +96,7 @@ public class RequestCheckAction extends Action {
 			tBean.setAmount(l);
 			tBean.setUserName(user.getUserName());
 			Date currDate = new Date();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 			dateFormat.setLenient(false);
 			String currDateString = dateFormat.format(currDate);
 			tBean.setExecuteDate(currDateString);

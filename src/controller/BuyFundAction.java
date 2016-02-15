@@ -165,7 +165,7 @@ public class BuyFundAction extends Action {
 			transactionBean.setAmount(a);
 			transactionBean.setTransactionType("8");
 			Date currDate = new Date();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 			dateFormat.setLenient(false);
 			String currDateString = dateFormat.format(currDate);
 			transactionBean.setExecuteDate(currDateString);
@@ -177,12 +177,12 @@ public class BuyFundAction extends Action {
 				PositionBean positionBeanTemp = new PositionBean(); 
 				positionBeanTemp.setCustomerId(customerId);
 				positionBeanTemp.setFundId(fundId);
-				positionBeanTemp.setShares(noOfShares);
+				positionBeanTemp.setShares(noOfShares*1000);
 				positionDAO.create(positionBeanTemp);
 			} else {
 				positionBean[0].setCustomerId(customerId);
 				positionBean[0].setFundId(fundId);
-				positionBean[0].setShares(positionBean[0].getShares() + noOfShares);
+				positionBean[0].setShares(positionBean[0].getShares() + noOfShares*1000);
 				positionDAO.update(positionBean[0]);	
 			}
 			Transaction.commit();
