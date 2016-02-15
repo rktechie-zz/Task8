@@ -26,7 +26,7 @@ public class TransitionDayAction extends Action {
 	private FundPriceHistoryDAO fundPriceHistoryDAO;
 	SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 	Random random = new Random();
-	ReturnJSON returnclass = new ReturnJSON();
+	ReturnGson returnclass = new ReturnGson();
 
 
 	public TransitionDayAction(Model model) {
@@ -67,14 +67,11 @@ public class TransitionDayAction extends Action {
 			String newTradingDay;
 			
 			if(lastTradingDay != null){
-				System.out.println("checkpoint1");
 				Calendar cal = Calendar.getInstance();
 				cal.setLenient(false);
 				cal.setTime(lastTradingDay);
 				cal.add(Calendar.DATE, 1);  // Incrementing 1 day to the last traded day.
-				System.out.println("checkpoint2");
 				newTradingDay = sdf.format(cal.getTime());
-				System.out.println(lastTradingDay);
 			} else {
 				returnclass.Message = "I'm sorry, you need to create atleast one fund before running Transition Day. ";
 				return gson.toJson(returnclass);
@@ -87,10 +84,12 @@ public class TransitionDayAction extends Action {
 				tmpHistBean.setExecuteDate(newTradingDay);
 				double newPrice;
 				do{
-					int multiplier = random.nextBoolean() ? 1 : -1;
-					newPrice = (fb.getLatestPrice() / 100.0) * (1 + multiplier*0.1);
+					double randomValue = (-0.1) + (0.1 - (-0.1)) * random.nextDouble();
+					System.out.println(randomValue);
+					newPrice = (double)(fb.getLatestPrice() / 100.0) * (double)(1.0 + randomValue);
+					System.out.println(newPrice);
 				} while (newPrice < 0.01 || newPrice > 1000);
-				long newPriceLong = (long)newPrice*100;
+				long newPriceLong = (long)(newPrice*100);
 				tmpHistBean.setPrice(newPriceLong);
 				fundPriceHistoryDAO.create(tmpHistBean);
 				fb.setLatestPrice(newPriceLong);

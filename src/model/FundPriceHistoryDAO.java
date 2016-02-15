@@ -59,7 +59,7 @@ public class FundPriceHistoryDAO extends GenericDAO<FundPriceHistoryBean> {
 			if (fb != null && fb.length != 0) {
 				Arrays.sort(fb);
 				
-				SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+				SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 				dateFormat.setLenient(false);
 				date = dateFormat.parse(fb[fb.length - 1].getExecuteDate());
 			}
