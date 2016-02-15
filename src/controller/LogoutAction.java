@@ -29,7 +29,7 @@ public class LogoutAction extends Action{
 
 		Gson gson = new Gson();
 		ReturnGson returnGson = new ReturnGson();
-		returnGson.message = "You’ve been logged out";
+		returnGson.message = "You've been logged out";
 		
 		return gson.toJson(returnGson);
 	}
