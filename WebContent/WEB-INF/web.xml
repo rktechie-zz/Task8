@@ -18,9 +18,13 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>appl-controller</servlet-name>
+		<url-pattern>    /transitionDay                     </url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>appl-controller</servlet-name>
 		<url-pattern>    /createCustomerAccount                     </url-pattern>
 	</servlet-mapping>
-		<servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>appl-controller</servlet-name>
 		<url-pattern>    /createFund                    </url-pattern>
 	</servlet-mapping>

@@ -89,10 +89,11 @@ public class CreateFundAction extends Action {
 					for(String output : errors) returnGson.Message += output;
 					return gson.toJson(returnGson);
 				}
-
+				Double init_value = Double.parseDouble(createFundForm.getInitial_value());
 				FundBean fundBean = new FundBean();
 				fundBean.setName(createFundForm.getName());
 				fundBean.setSymbol(createFundForm.getSymbol());
+				fundBean.setLatestPrice((long)(init_value*100));
 				fundDAO.create(fundBean);
 				FundPriceHistoryBean fundHistoryBean = new FundPriceHistoryBean();
 				Date currDate = new Date();
@@ -102,7 +103,6 @@ public class CreateFundAction extends Action {
 				fundHistoryBean.setExecuteDate(currDateString);
 				int fundId = fundDAO.read(createFundForm.getName()).getFundId();
 				fundHistoryBean.setFundId(fundId);
-				Double init_value = Double.parseDouble(createFundForm.getInitial_value());
 				fundHistoryBean.setPrice((long)(init_value*100));
 				fundPriceHistoryDAO.create(fundHistoryBean);
 
